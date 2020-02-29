@@ -36,13 +36,22 @@ class App {
     this.setLoading();
 
     try {
-      const response = await api.get(`/repos/${repoInput}`);
+      const response = await api.get(`/users/${repoInput}`);
 
-      const { name, description, html_url, avatar_url } = response.data;
+      const {
+        name,
+        bio,
+        location,
+        following,
+        html_url,
+        avatar_url
+      } = response.data;
 
       this.repositories.push({
         name,
-        description,
+        bio,
+        location,
+        following,
         avatar_url,
         html_url
       });
@@ -65,21 +74,35 @@ class App {
       let titleEl = document.createElement('strong');
       titleEl.appendChild(document.createTextNode(repo.name));
 
-      let descriptionEl = document.createElement('p');
-      descriptionEl.appendChild(document.createTextNode(repo.description));
+      let bioEl = document.createElement('p');
+      bioEl.appendChild(document.createTextNode(repo.bio));
+
+      let locationEl = document.createElement('p');
+      locationEl.appendChild(document.createTextNode(repo.location));
 
       let linkEl = document.createElement('a');
       linkEl.setAttribute('target', '_blank');
       linkEl.setAttribute('href', repo.html_url);
       linkEl.appendChild(document.createTextNode('Acessar'));
 
+      let removeEl = document.createElement('BUTTON');
+      removeEl.appendChild(document.createTextNode('X'));
+
+      removeEl.onclick = () => {
+        listItemEl.innerHTML = '';
+      };
+
       let listItemEl = document.createElement('li');
       listItemEl.appendChild(imgEl);
       listItemEl.appendChild(titleEl);
-      listItemEl.appendChild(descriptionEl);
+      listItemEl.appendChild(bioEl);
+      listItemEl.appendChild(locationEl);
+      listItemEl.appendChild(removeEl);
       listItemEl.appendChild(linkEl);
 
       this.listEl.appendChild(listItemEl);
+
+      console.log(listItemEl);
     });
   }
 }
